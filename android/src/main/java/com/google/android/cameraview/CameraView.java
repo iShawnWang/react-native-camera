@@ -131,7 +131,7 @@ public class CameraView extends FrameLayout {
         final PreviewImpl preview = createPreviewImpl(context);
         mCallbacks = new CallbackBridge();
         String _system_model = SystemUtil.getSystemModel();
-        if (_system_model.contains(com.afl.Constants.INSTANCE.getB_QUALITY()) ||
+        if (_system_model.contains(com.afl.Constants.B_QUALITY) ||
                 fallbackToOldApi || Build.VERSION.SDK_INT < 21) {
             mImpl = new Camera1(mCallbacks, preview);
         } else if (Build.VERSION.SDK_INT < 23) {

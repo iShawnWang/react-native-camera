@@ -644,8 +644,8 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             releaseCamera();
         }
         try {
-            mCamera = Camera.open(CameraSort.INSTANCE.getMCameraIndex());
-            CameraSort.INSTANCE.nextCmaeraId();
+            mCamera = Camera.open(CameraSort.mCameraIndex);
+            CameraSort.nextCameraId();
             mCameraParameters = mCamera.getParameters();
             // Supported preview sizes
             mPreviewSizes.clear();
