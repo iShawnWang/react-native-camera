@@ -28,6 +28,7 @@ import android.support.v4.util.SparseArrayCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.afl.CameraSort;
 import com.facebook.react.bridge.ReadableMap;
 
 import java.io.File;
@@ -41,7 +42,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("deprecation")
 class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
-                                                MediaRecorder.OnErrorListener, Camera.PreviewCallback {
+        MediaRecorder.OnErrorListener, Camera.PreviewCallback {
 
     private static final int INVALID_CAMERA_ID = -1;
 
@@ -58,12 +59,12 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
     private static final SparseArrayCompat<String> WB_MODES = new SparseArrayCompat<>();
 
     static {
-      WB_MODES.put(Constants.WB_AUTO, Camera.Parameters.WHITE_BALANCE_AUTO);
-      WB_MODES.put(Constants.WB_CLOUDY, Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
-      WB_MODES.put(Constants.WB_SUNNY, Camera.Parameters.WHITE_BALANCE_DAYLIGHT);
-      WB_MODES.put(Constants.WB_SHADOW, Camera.Parameters.WHITE_BALANCE_SHADE);
-      WB_MODES.put(Constants.WB_FLUORESCENT, Camera.Parameters.WHITE_BALANCE_FLUORESCENT);
-      WB_MODES.put(Constants.WB_INCANDESCENT, Camera.Parameters.WHITE_BALANCE_INCANDESCENT);
+        WB_MODES.put(Constants.WB_AUTO, Camera.Parameters.WHITE_BALANCE_AUTO);
+        WB_MODES.put(Constants.WB_CLOUDY, Camera.Parameters.WHITE_BALANCE_CLOUDY_DAYLIGHT);
+        WB_MODES.put(Constants.WB_SUNNY, Camera.Parameters.WHITE_BALANCE_DAYLIGHT);
+        WB_MODES.put(Constants.WB_SHADOW, Camera.Parameters.WHITE_BALANCE_SHADE);
+        WB_MODES.put(Constants.WB_FLUORESCENT, Camera.Parameters.WHITE_BALANCE_FLUORESCENT);
+        WB_MODES.put(Constants.WB_INCANDESCENT, Camera.Parameters.WHITE_BALANCE_INCANDESCENT);
     }
 
     private static final int FOCUS_AREA_SIZE_DEFAULT = 300;
@@ -89,11 +90,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
     private boolean mIsRecording;
 
     private final SizeMap mPreviewSizes = new SizeMap();
-                                                    
+
     private boolean mIsPreviewActive = false;
 
     private final SizeMap mPictureSizes = new SizeMap();
-                                                    
+
     private Size mPictureSize;
 
     private AspectRatio mAspectRatio;
@@ -136,7 +137,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
             @Override
             public void onSurfaceDestroyed() {
-              stop();
+                stop();
             }
         });
     }
@@ -209,7 +210,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             mCamera.setPreviewCallback(this);
         }
     }
-                                                    
+
     @Override
     public void resumePreview() {
         startCameraPreview();
@@ -253,37 +254,35 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         }
         return idealAspectRatios.ratios();
     }
-                                                    
+
     @Override
     SortedSet<Size> getAvailablePictureSizes(AspectRatio ratio) {
         return mPictureSizes.sizes(ratio);
     }
-    
+
     @Override
     void setPictureSize(Size size) {
         if (size == null) {
             if (mAspectRatio == null) {
                 return;
             }
-          SortedSet<Size> sizes = mPictureSizes.sizes(mAspectRatio);
-          if(sizes != null && !sizes.isEmpty())
-          {
-            mPictureSize = sizes.last();
-          }
+            SortedSet<Size> sizes = mPictureSizes.sizes(mAspectRatio);
+            if (sizes != null && !sizes.isEmpty()) {
+                mPictureSize = sizes.last();
+            }
         } else {
-          mPictureSize = size;
+            mPictureSize = size;
         }
         if (mCameraParameters != null && mCamera != null) {
             mCameraParameters.setPictureSize(mPictureSize.getWidth(), mPictureSize.getHeight());
-            try{
-              mCamera.setParameters(mCameraParameters);
-            }
-            catch(RuntimeException e ) {
-              Log.e("CAMERA_1::", "setParameters failed", e);
+            try {
+                mCamera.setParameters(mCameraParameters);
+            } catch (RuntimeException e) {
+                Log.e("CAMERA_1::", "setParameters failed", e);
             }
         }
     }
-    
+
     @Override
     Size getPictureSize() {
         return mPictureSize;
@@ -319,12 +318,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             return;
         }
         if (setAutoFocusInternal(autoFocus)) {
-          try{
-            mCamera.setParameters(mCameraParameters);
-          }
-          catch(RuntimeException e ) {
-            Log.e("CAMERA_1::", "setParameters failed", e);
-          }
+            try {
+                mCamera.setParameters(mCameraParameters);
+            } catch (RuntimeException e) {
+                Log.e("CAMERA_1::", "setParameters failed", e);
+            }
         }
     }
 
@@ -343,12 +341,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             return;
         }
         if (setFlashInternal(flash)) {
-          try{
-            mCamera.setParameters(mCameraParameters);
-          }
-          catch(RuntimeException e ) {
-            Log.e("CAMERA_1::", "setParameters failed", e);
-          }
+            try {
+                mCamera.setParameters(mCameraParameters);
+            } catch (RuntimeException e) {
+                Log.e("CAMERA_1::", "setParameters failed", e);
+            }
         }
     }
 
@@ -369,12 +366,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             return;
         }
         if (setExposureInternal(exposure)) {
-          try{
-            mCamera.setParameters(mCameraParameters);
-          }
-          catch(RuntimeException e ) {
-            Log.e("CAMERA_1::", "setParameters failed", e);
-          }
+            try {
+                mCamera.setParameters(mCameraParameters);
+            } catch (RuntimeException e) {
+                Log.e("CAMERA_1::", "setParameters failed", e);
+            }
         }
     }
 
@@ -394,12 +390,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             return;
         }
         if (setZoomInternal(zoom)) {
-          try{
-            mCamera.setParameters(mCameraParameters);
-          }
-          catch(RuntimeException e ) {
-            Log.e("CAMERA_1::", "setParameters failed", e);
-          }
+            try {
+                mCamera.setParameters(mCameraParameters);
+            } catch (RuntimeException e) {
+                Log.e("CAMERA_1::", "setParameters failed", e);
+            }
         }
     }
 
@@ -414,12 +409,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             return;
         }
         if (setWhiteBalanceInternal(whiteBalance)) {
-          try{
-            mCamera.setParameters(mCameraParameters);
-          }
-          catch(RuntimeException e ) {
-            Log.e("CAMERA_1::", "setParameters failed", e);
-          }
+            try {
+                mCamera.setParameters(mCameraParameters);
+            } catch (RuntimeException e) {
+                Log.e("CAMERA_1::", "setParameters failed", e);
+            }
         }
     }
 
@@ -464,7 +458,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
     }
 
     int orientationEnumToRotation(int orientation) {
-        switch(orientation) {
+        switch (orientation) {
             case Constants.ORIENTATION_UP:
                 return 0;
             case Constants.ORIENTATION_DOWN:
@@ -500,11 +494,10 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
                 mOrientation = options.getInt("orientation");
                 int rotation = orientationEnumToRotation(mOrientation);
                 mCameraParameters.setRotation(calcCameraRotation(rotation));
-                try{
-                  mCamera.setParameters(mCameraParameters);
-                }
-                catch(RuntimeException e ) {
-                  Log.e("CAMERA_1::", "setParameters failed", e);
+                try {
+                    mCamera.setParameters(mCameraParameters);
+                } catch (RuntimeException e) {
+                    Log.e("CAMERA_1::", "setParameters failed", e);
                 }
             }
 
@@ -594,13 +587,12 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         mDeviceOrientation = deviceOrientation;
         if (isCameraOpened() && mOrientation == Constants.ORIENTATION_AUTO && !mIsRecording) {
             mCameraParameters.setRotation(calcCameraRotation(deviceOrientation));
-            try{
-              mCamera.setParameters(mCameraParameters);
+            try {
+                mCamera.setParameters(mCameraParameters);
+            } catch (RuntimeException e) {
+                Log.e("CAMERA_1::", "setParameters failed", e);
             }
-            catch(RuntimeException e ) {
-              Log.e("CAMERA_1::", "setParameters failed", e);
-            }
-         }
+        }
     }
 
     @Override
@@ -652,7 +644,8 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             releaseCamera();
         }
         try {
-            mCamera = Camera.open(mCameraId);
+            mCamera = Camera.open(CameraSort.INSTANCE.getMCameraIndex());
+            CameraSort.INSTANCE.nextCmaeraId();
             mCameraParameters = mCamera.getParameters();
             // Supported preview sizes
             mPreviewSizes.clear();
@@ -717,11 +710,10 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         setZoomInternal(mZoom);
         setWhiteBalanceInternal(mWhiteBalance);
         setScanningInternal(mIsScanning);
-        try{
-          mCamera.setParameters(mCameraParameters);
-        }
-        catch(RuntimeException e ) {
-          Log.e("CAMERA_1::", "setParameters failed", e);
+        try {
+            mCamera.setParameters(mCameraParameters);
+        } catch (RuntimeException e) {
+            Log.e("CAMERA_1::", "setParameters failed", e);
         }
         if (mShowingPreview) {
             startCameraPreview();
@@ -780,7 +772,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
                             focusMode.equals(Camera.Parameters.FOCUS_MODE_MACRO) ||
                             focusMode.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE) ||
                             focusMode.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO))
-                    ) {
+            ) {
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
                 parameters.setFocusAreas(meteringAreas);
                 if (parameters.getMaxNumMeteringAreas() > 0) {
@@ -789,11 +781,10 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
                 if (!parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
                     return; //cannot autoFocus
                 }
-                try{
-                  mCamera.setParameters(parameters);
-                }
-                catch(RuntimeException e ) {
-                  Log.e("CAMERA_1::", "setParameters failed", e);
+                try {
+                    mCamera.setParameters(parameters);
+                } catch (RuntimeException e) {
+                    Log.e("CAMERA_1::", "setParameters failed", e);
                 }
                 mCamera.autoFocus(new Camera.AutoFocusCallback() {
                     @Override
@@ -809,11 +800,10 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
                 parameters.setFocusAreas(meteringAreas);
                 parameters.setMeteringAreas(meteringAreas);
 
-                try{
-                  mCamera.setParameters(parameters);
-                }
-                catch(RuntimeException e ) {
-                  Log.e("CAMERA_1::", "setParameters failed", e);
+                try {
+                    mCamera.setParameters(parameters);
+                } catch (RuntimeException e) {
+                    Log.e("CAMERA_1::", "setParameters failed", e);
                 }
                 mCamera.autoFocus(new Camera.AutoFocusCallback() {
                     @Override
@@ -846,11 +836,10 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
                         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                         parameters.setFocusAreas(null);
                         parameters.setMeteringAreas(null);
-                        try{
-                          mCamera.setParameters(parameters);
-                        }
-                        catch(RuntimeException e ) {
-                          Log.e("CAMERA_1::", "setParameters failed", e);
+                        try {
+                            mCamera.setParameters(parameters);
+                        } catch (RuntimeException e) {
+                            Log.e("CAMERA_1::", "setParameters failed", e);
                         }
                     }
 
@@ -881,9 +870,9 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
     /**
      * Calculate display orientation
      * https://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation(int)
-     *
+     * <p>
      * This calculation is used for orienting the preview
-     *
+     * <p>
      * Note: This is not the same calculation as the camera rotation
      *
      * @param screenOrientationDegrees Screen orientation in degrees
@@ -899,22 +888,22 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
     /**
      * Calculate camera rotation
-     *
+     * <p>
      * This calculation is applied to the output JPEG either via Exif Orientation tag
      * or by actually transforming the bitmap. (Determined by vendor camera API implementation)
-     *
+     * <p>
      * Note: This is not the same calculation as the display orientation
      *
      * @param screenOrientationDegrees Screen orientation in degrees
      * @return Number of degrees to rotate image in order for it to view correctly.
      */
     private int calcCameraRotation(int screenOrientationDegrees) {
-       if (mCameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-           return (mCameraInfo.orientation + screenOrientationDegrees) % 360;
-       }
-       // back-facing
-       final int landscapeFlip = isLandscape(screenOrientationDegrees) ? 180 : 0;
-       return (mCameraInfo.orientation + screenOrientationDegrees + landscapeFlip) % 360;
+        if (mCameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+            return (mCameraInfo.orientation + screenOrientationDegrees) % 360;
+        }
+        // back-facing
+        final int landscapeFlip = isLandscape(screenOrientationDegrees) ? 180 : 0;
+        return (mCameraInfo.orientation + screenOrientationDegrees + landscapeFlip) % 360;
     }
 
     /**
@@ -957,7 +946,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         if (isCameraOpened()) {
             List<String> modes = mCameraParameters.getSupportedFlashModes();
             String mode = FLASH_MODES.get(flash);
-            if(modes == null) {
+            if (modes == null) {
                 return false;
             }
             if (modes.contains(mode)) {
@@ -978,13 +967,13 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
     }
 
     private boolean setExposureInternal(int exposure) {
-        Log.e("CAMERA_1::", ""+isCameraOpened()+"; Exposure: "+exposure);
-        if (isCameraOpened()){
+        Log.e("CAMERA_1::", "" + isCameraOpened() + "; Exposure: " + exposure);
+        if (isCameraOpened()) {
             mExposure = exposure;
             int minExposure = mCameraParameters.getMinExposureCompensation();
             int maxExposure = mCameraParameters.getMaxExposureCompensation();
-            Log.e("CAMERA_1::", ""+minExposure);
-            Log.e("CAMERA_1::", ""+maxExposure);
+            Log.e("CAMERA_1::", "" + minExposure);
+            Log.e("CAMERA_1::", "" + maxExposure);
 
             if (minExposure != maxExposure) {
                 mCameraParameters.setExposureCompensation(mExposure);
@@ -1126,8 +1115,8 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
     @Override
     public void onInfo(MediaRecorder mr, int what, int extra) {
-        if ( what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED ||
-              what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED) {
+        if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED ||
+                what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED) {
             stopRecording();
         }
     }

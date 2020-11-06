@@ -36,6 +36,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.graphics.SurfaceTexture;
 
+import com.afl.SystemUtil;
 import com.facebook.react.bridge.ReadableMap;
 
 import java.lang.annotation.Retention;
@@ -46,34 +47,52 @@ import java.util.SortedSet;
 
 public class CameraView extends FrameLayout {
 
-    /** The camera device faces the opposite direction as the device's screen. */
+    /**
+     * The camera device faces the opposite direction as the device's screen.
+     */
     public static final int FACING_BACK = Constants.FACING_BACK;
 
-    /** The camera device faces the same direction as the device's screen. */
+    /**
+     * The camera device faces the same direction as the device's screen.
+     */
     public static final int FACING_FRONT = Constants.FACING_FRONT;
 
-    /** Direction the camera faces relative to device screen. */
+    /**
+     * Direction the camera faces relative to device screen.
+     */
     @IntDef({FACING_BACK, FACING_FRONT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Facing {
     }
 
-    /** Flash will not be fired. */
+    /**
+     * Flash will not be fired.
+     */
     public static final int FLASH_OFF = Constants.FLASH_OFF;
 
-    /** Flash will always be fired during snapshot. */
+    /**
+     * Flash will always be fired during snapshot.
+     */
     public static final int FLASH_ON = Constants.FLASH_ON;
 
-    /** Constant emission of light during preview, auto-focus and snapshot. */
+    /**
+     * Constant emission of light during preview, auto-focus and snapshot.
+     */
     public static final int FLASH_TORCH = Constants.FLASH_TORCH;
 
-    /** Flash will be fired automatically when required. */
+    /**
+     * Flash will be fired automatically when required.
+     */
     public static final int FLASH_AUTO = Constants.FLASH_AUTO;
 
-    /** Flash will be fired in red-eye reduction mode. */
+    /**
+     * Flash will be fired in red-eye reduction mode.
+     */
     public static final int FLASH_RED_EYE = Constants.FLASH_RED_EYE;
 
-    /** The mode for for the camera device's flash control */
+    /**
+     * The mode for for the camera device's flash control
+     */
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({FLASH_OFF, FLASH_ON, FLASH_TORCH, FLASH_AUTO, FLASH_RED_EYE})
     public @interface Flash {
@@ -100,7 +119,7 @@ public class CameraView extends FrameLayout {
     @SuppressWarnings("WrongConstant")
     public CameraView(Context context, AttributeSet attrs, int defStyleAttr, boolean fallbackToOldApi) {
         super(context, attrs, defStyleAttr);
-        if (isInEditMode()){
+        if (isInEditMode()) {
             mCallbacks = null;
             mDisplayOrientationDetector = null;
             return;
@@ -111,7 +130,9 @@ public class CameraView extends FrameLayout {
         // Internal setup
         final PreviewImpl preview = createPreviewImpl(context);
         mCallbacks = new CallbackBridge();
-        if (fallbackToOldApi || Build.VERSION.SDK_INT < 21) {
+        String _system_model = SystemUtil.getSystemModel();
+        if (_system_model.contains(com.afl.Constants.INSTANCE.getB_QUALITY()) ||
+                fallbackToOldApi || Build.VERSION.SDK_INT < 21) {
             mImpl = new Camera1(mCallbacks, preview);
         } else if (Build.VERSION.SDK_INT < 23) {
             mImpl = new Camera2(mCallbacks, preview, context);
@@ -158,7 +179,7 @@ public class CameraView extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (isInEditMode()){
+        if (isInEditMode()) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
@@ -292,7 +313,7 @@ public class CameraView extends FrameLayout {
                 this.removeView(mImpl.getView());
             }
             //store the state and restore this state after fall back to Camera1
-            Parcelable state=onSaveInstanceState();
+            Parcelable state = onSaveInstanceState();
             // Camera2 uses legacy hardware layer; fall back to Camera1
             mImpl = new Camera1(mCallbacks, createPreviewImpl(getContext()));
             onRestoreInstanceState(state);
@@ -357,10 +378,10 @@ public class CameraView extends FrameLayout {
     }
 
     public View getView() {
-      if (mImpl != null) {
-        return mImpl.getView();
-      }
-      return null;
+        if (mImpl != null) {
+            return mImpl.getView();
+        }
+        return null;
     }
 
     /**
@@ -411,7 +432,7 @@ public class CameraView extends FrameLayout {
     public AspectRatio getAspectRatio() {
         return mImpl.getAspectRatio();
     }
-    
+
     /**
      * Gets all the picture sizes for particular ratio supported by the current camera.
      *
@@ -420,7 +441,7 @@ public class CameraView extends FrameLayout {
     public SortedSet<Size> getAvailablePictureSizes(@NonNull AspectRatio ratio) {
         return mImpl.getAvailablePictureSizes(ratio);
     }
-    
+
     /**
      * Sets the size of taken pictures.
      *
@@ -429,7 +450,7 @@ public class CameraView extends FrameLayout {
     public void setPictureSize(@NonNull Size size) {
         mImpl.setPictureSize(size);
     }
-    
+
     /**
      * Gets the size of pictures that will be taken.
      */
@@ -495,7 +516,7 @@ public class CameraView extends FrameLayout {
     public int getCameraOrientation() {
         return mImpl.getCameraOrientation();
     }
-    
+
     /**
      * Sets the auto focus point.
      *
@@ -510,27 +531,33 @@ public class CameraView extends FrameLayout {
         mImpl.setFocusDepth(value);
     }
 
-    public float getFocusDepth() { return mImpl.getFocusDepth(); }
+    public float getFocusDepth() {
+        return mImpl.getFocusDepth();
+    }
 
     public void setZoom(float zoom) {
-      mImpl.setZoom(zoom);
+        mImpl.setZoom(zoom);
     }
 
     public float getZoom() {
-      return mImpl.getZoom();
+        return mImpl.getZoom();
     }
 
     public void setWhiteBalance(int whiteBalance) {
-      mImpl.setWhiteBalance(whiteBalance);
+        mImpl.setWhiteBalance(whiteBalance);
     }
 
     public int getWhiteBalance() {
-      return mImpl.getWhiteBalance();
+        return mImpl.getWhiteBalance();
     }
 
-    public void setScanning(boolean isScanning) { mImpl.setScanning(isScanning);}
+    public void setScanning(boolean isScanning) {
+        mImpl.setScanning(isScanning);
+    }
 
-    public boolean getScanning() { return mImpl.getScanning(); }
+    public boolean getScanning() {
+        return mImpl.getScanning();
+    }
 
     /**
      * Take a picture. The result will be returned to
@@ -543,10 +570,11 @@ public class CameraView extends FrameLayout {
     /**
      * Record a video and save it to file. The result will be returned to
      * {@link Callback#onVideoRecorded(CameraView, String, int, int)}.
-     * @param path Path to file that video will be saved to.
+     *
+     * @param path        Path to file that video will be saved to.
      * @param maxDuration Maximum duration of the recording, in seconds.
      * @param maxFileSize Maximum recording file size, in bytes.
-     * @param profile Quality profile of the recording.
+     * @param profile     Quality profile of the recording.
      */
     public boolean record(String path, int maxDuration, int maxFileSize,
                           boolean recordAudio, CamcorderProfile profile, int orientation) {
@@ -556,11 +584,11 @@ public class CameraView extends FrameLayout {
     public void stopRecording() {
         mImpl.stopRecording();
     }
-    
+
     public void resumePreview() {
         mImpl.resumePreview();
     }
-    
+
     public void pausePreview() {
         mImpl.pausePreview();
     }
@@ -662,7 +690,7 @@ public class CameraView extends FrameLayout {
         int whiteBalance;
 
         boolean scanning;
-        
+
         Size pictureSize;
 
         @SuppressWarnings("WrongConstant")
@@ -759,7 +787,8 @@ public class CameraView extends FrameLayout {
         public void onFramePreview(CameraView cameraView, byte[] data, int width, int height, int orientation) {
         }
 
-        public void onMountError(CameraView cameraView) {}
+        public void onMountError(CameraView cameraView) {
+        }
     }
 
 }
