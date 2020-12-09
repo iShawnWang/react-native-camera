@@ -47,6 +47,8 @@ import java.util.SortedSet;
 
 public class CameraView extends FrameLayout {
 
+    protected int mCameraId;
+
     /**
      * The camera device faces the opposite direction as the device's screen.
      */
@@ -134,6 +136,7 @@ public class CameraView extends FrameLayout {
         if (_system_model.contains(com.afl.Constants.B_QUALITY) ||
                 fallbackToOldApi || Build.VERSION.SDK_INT < 21) {
             mImpl = new Camera1(mCallbacks, preview);
+            mImpl.setCameraId(mCameraId);
         } else if (Build.VERSION.SDK_INT < 23) {
             mImpl = new Camera2(mCallbacks, preview, context);
         } else {

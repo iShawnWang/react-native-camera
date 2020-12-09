@@ -861,6 +861,11 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
         return new Size(mPreview.getWidth(), mPreview.getHeight());
     }
 
+    @Override
+    void setCameraId(int cameraId) {
+
+    }
+
     /**
      * Chooses the optimal preview size based on {@link #mPreviewSizes} and the surface size.
      *
