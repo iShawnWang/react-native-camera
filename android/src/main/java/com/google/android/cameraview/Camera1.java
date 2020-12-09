@@ -75,7 +75,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
     private int mCameraId;
 
-    private int mConfigCameraId;
+    private int mConfigCameraId = -1;
 
     private final AtomicBoolean isPictureCaptureInProgress = new AtomicBoolean(false);
 
@@ -651,7 +651,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             releaseCamera();
         }
         try {
-            mCamera = Camera.open(mConfigCameraId);
+            if (mConfigCameraId != -1){
+                mCamera = Camera.open(mConfigCameraId);
+            }else {
+                mCamera = Camera.open(mCameraId);
+            }
             CameraSort.nextCameraId();
             mCameraParameters = mCamera.getParameters();
             // Supported preview sizes
