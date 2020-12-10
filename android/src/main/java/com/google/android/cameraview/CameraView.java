@@ -136,7 +136,6 @@ public class CameraView extends FrameLayout {
         if (_system_model.contains(com.afl.Constants.B_QUALITY) ||
                 fallbackToOldApi || Build.VERSION.SDK_INT < 21) {
             mImpl = new Camera1(mCallbacks, preview);
-            mImpl.setCameraId(mCameraId);
         } else if (Build.VERSION.SDK_INT < 23) {
             mImpl = new Camera2(mCallbacks, preview, context);
         } else {
@@ -311,6 +310,7 @@ public class CameraView extends FrameLayout {
      * {@link Activity#onResume()}.
      */
     public void start() {
+        mImpl.setCameraId(mCameraId);
         if (!mImpl.start()) {
             if (mImpl.getView() != null) {
                 this.removeView(mImpl.getView());
