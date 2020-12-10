@@ -135,6 +135,7 @@ export interface RNCameraProps {
   autoFocus?: keyof AutoFocus;
   autoFocusPointOfInterest?: Point;
   type?: keyof CameraType;
+  cameraId?: 0 | 1;
   flashMode?: keyof FlashMode;
   notAuthorizedView?: JSX.Element;
   pendingAuthorizationView?: JSX.Element;
